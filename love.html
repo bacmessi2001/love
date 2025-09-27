@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Làm Người Yêu Tớ Nhé 💙</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to bottom, #000428, #004e92);
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Hiệu ứng sao trên bầu trời */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        /* Container cho các dòng chữ */
+        .message-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 2;
+        }
+
+        /* Phân bố lại 8 cột với khoảng cách lớn hơn */
+        .column-1 { left: 5%; }
+        .column-2 { left: 16%; }
+        .column-3 { left: 27%; }
+        .column-4 { left: 38%; }
+        .column-5 { left: 49%; }
+        .column-6 { left: 60%; }
+        .column-7 { left: 71%; }
+        .column-8 { left: 82%; }
+
+
+        /* Dòng chữ hồng neon rơi xuống */
+        .falling-text {
+            position: absolute;
+            color: #ff1493;
+            text-shadow: 
+                0 0 10px #ff1493,
+                0 0 20px #ff1493,
+                0 0 30px #ff1493,
+                0 0 40px #ff0066,
+                0 0 70px #ff0066,
+                0 0 80px #ff0066,
+                0 0 100px #ff0066;
+            font-size: 20px;
+            font-weight: bold;
+            white-space: nowrap;
+            transform: translateY(-100px);
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            from {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 0;
+            }
+            5% {
+                opacity: 1;
+            }
+            95% {
+                opacity: 1;
+            }
+            to {
+                transform: translateY(calc(100vh + 100px)) rotate(5deg);
+                opacity: 0;
+            }
+        }
+
+        /* Trái tim hồng rơi xuống */
+        .pink-heart {
+            position: absolute;
+            color: #ff1493;
+            font-size: 28px;
+            text-shadow: 
+                0 0 10px #ff1493,
+                0 0 20px #ff1493,
+                0 0 30px #ff1493;
+            transform: translateY(-100px);
+            animation: heartFall linear forwards;
+        }
+
+        @keyframes heartFall {
+            from {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 0;
+            }
+            5% {
+                opacity: 1;
+            }
+            95% {
+                opacity: 1;
+            }
+            to {
+                transform: translateY(calc(100vh + 100px)) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Hiệu ứng trái tim nở */
+        .pulse-heart {
+            position: absolute;
+            color: #ff1493;
+            font-size: 50px;
+            animation: pulse 2s ease-in-out forwards;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.5);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(2);
+                opacity: 0;
+            }
+        }
+
+        /* Thông điệp chính ở giữa */
+        .main-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 10;
+            padding: 30px 50px; /* Giữ lại padding để tạo khoảng cách */
+        }
+
+        .main-message h1 {
+            color: white;
+            font-size: 48px;
+            margin-bottom: 20px;
+            text-shadow: 
+                0 0 20px rgba(255, 255, 255, 0.5),
+                0 0 40px rgba(255, 255, 255, 0.3);
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        /* Thêm style để căn lề trái cho các dòng chữ trong tiêu đề */
+        .main-message h1 > span {
+            display: inline-block;
+            text-align: left;
+        }
+
+        @keyframes glow {
+            0%, 100% { opacity: 0.9; }
+            50% { opacity: 1; }
+        }
+
+        .heart-button {
+            background: linear-gradient(45deg, #ff0066, #ff3399);
+            border: none;
+            color: white;
+            padding: 15px 40px;
+            font-size: 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 0, 102, 0.4);
+        }
+
+        .heart-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(255, 0, 102, 0.6);
+        }
+    </style>
+</head>
+<body>
+    <!-- Sao trên bầu trời -->
+    <div class="stars" id="stars"></div>
+    
+    <!-- Container cho các thông điệp rơi -->
+    <div class="message-container" id="messageContainer"></div>
+    
+    <!-- Thông điệp chính -->
+    <div class="main-message">
+        <h1>
+            <span>Làm Người Yêu<br> 💖 Tớ Nhé 💖</span>
+        </h1>
+        <button class="heart-button" onclick="createHeartBurst(event)">Đồng ý 💕</button>
+    </div>
+
+    <script>
+        let isAgreed = false; // Biến để theo dõi trạng thái đã đồng ý hay chưa
+
+        // Tạo sao
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const numberOfStars = 150;
+            
+            for (let i = 0; i < numberOfStars; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.width = Math.random() * 3 + 'px';
+                star.style.height = star.style.width;
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // Các thông điệp yêu thương
+        const messages = [
+            "Làm người yêu tớ nhé ❤️",
+            "Tớ thích cậu lắm ❤️",
+            "Cậu là tất cả với tớ 💕",
+            "Yêu cậu nhiều lắm 💖",
+            "Mãi bên nhau nhé 💑",
+            "Cậu là ánh sáng của tớ ⭐",
+            "Trái tim tớ thuộc về cậu 💝",
+            "Cùng nhau mãi mãi nhé 🌹",
+            "Cậu làm tớ hạnh phúc 😊",
+            "Tớ muốn ở bên cậu 💏",
+            "Cậu có thích tớ không? 💭",
+            "Hạnh phúc khi có cậu 🥰",
+            "Cậu là điều tuyệt vời nhất 💫",
+            "Cậu là lý do tớ mỉm cười 😊"
+        ];
+        
+        // Hàm tạo một dòng chữ rơi tại một cột cụ thể
+        function createSingleFallingText(columnIndex, delay) {
+            const container = document.getElementById('messageContainer');
+            const element = document.createElement('div');
+            element.className = 'falling-text';
+
+            // LOGIC MỚI: Kiểm tra trạng thái đã đồng ý
+            if (isAgreed) {
+                element.textContent = 'Tớ yêu cậu nhiều lắm 💖';
+            } else {
+                element.textContent = messages[Math.floor(Math.random() * messages.length)];
+            }
+
+            element.className += ' column-' + (columnIndex + 1);
+
+            const duration = (Math.random() * 4 + 10) + 's'; 
+            element.style.animationDuration = duration;
+            element.style.animationDelay = delay;
+            
+            container.appendChild(element);
+            
+            const durationMs = parseFloat(duration) * 1000 + parseFloat(delay.replace('s', '')) * 1000 + 100;
+            setTimeout(() => {
+                if (element.parentNode) {
+                    element.remove();
+                }
+            }, durationMs);
+        }
+
+        // Hàm xáo trộn mảng
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        // *** LOGIC MỚI: Tạo nhóm chữ rơi và đảm bảo không có cột nào nằm cạnh nhau ***
+        function createFallingTextGroup() {
+            const screenWidth = window.innerWidth;
+            let numberOfLines;
+
+            if (screenWidth < 600) { numberOfLines = 2; } 
+            else if (screenWidth < 1024) { numberOfLines = 3; } 
+            else { numberOfLines = 4; }
+
+            const totalColumns = 8;
+            let columnPool = Array.from({ length: totalColumns }, (_, i) => i);
+            
+            shuffleArray(columnPool);
+
+            let selectedColumns = columnPool.slice(0, numberOfLines);
+            selectedColumns.sort((a, b) => a - b);
+
+            // Logic mới để loại bỏ các cột nằm liền kề nhau
+            const finalColumns = [];
+            if (selectedColumns.length > 0) {
+                finalColumns.push(selectedColumns[0]); // Luôn thêm cột đầu tiên
+                for (let i = 1; i < selectedColumns.length; i++) {
+                    // Chỉ thêm cột hiện tại nếu nó không nằm ngay cạnh cột cuối cùng đã được thêm
+                    if (selectedColumns[i] > finalColumns[finalColumns.length - 1] + 1) {
+                        finalColumns.push(selectedColumns[i]);
+                    }
+                }
+            }
+            
+            const commonDelay = (Math.random() * 0.2) + 's'; 
+            finalColumns.forEach(columnIndex => {
+                createSingleFallingText(columnIndex, commonDelay);
+            });
+        }
+
+
+        // Tạo trái tim hồng rơi
+        function createPinkHeart() {
+            const container = document.getElementById('messageContainer');
+            const heart = document.createElement('div');
+            heart.className = 'pink-heart';
+            heart.textContent = '💖';
+            
+            const leftPosition = 10 + Math.random() * 80;
+            heart.style.left = leftPosition + '%';
+            
+            const duration = (Math.random() * 4 + 13) + 's';
+            heart.style.animationDuration = duration;
+            heart.style.animationDelay = (Math.random() * 2) + 's';
+            
+            container.appendChild(heart);
+            
+            const durationMs = parseFloat(duration) * 1000 + parseFloat(heart.style.animationDelay.replace('s', '')) * 1000 + 100;
+            setTimeout(() => {
+                if (heart.parentNode) {
+                    heart.remove();
+                }
+            }, durationMs);
+        }
+        
+        // Hiệu ứng trái tim nổ khi click
+        function createHeartBurst(event) {
+            if (isAgreed) return; // Tránh chạy lại hiệu ứng nếu đã nhấn rồi
+            isAgreed = true; // Đặt trạng thái đã đồng ý
+
+            // Đổi tất cả dòng chữ đang rơi
+            const allFallingTexts = document.querySelectorAll('.falling-text');
+            allFallingTexts.forEach(text => {
+                text.textContent = 'Tớ yêu cậu nhiều lắm 💖';
+            });
+            
+            const hearts = ['💕', '💖', '💗', '💝', '💓'];
+            for (let i = 0; i < 12; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.className = 'pulse-heart';
+                    heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+                    
+                    const angle = (Math.PI * 2 * i) / 12;
+                    const radius = 30;
+                    heart.style.left = (event.clientX - 25 + Math.cos(angle) * radius) + 'px';
+                    heart.style.top = (event.clientY - 25 + Math.sin(angle) * radius) + 'px';
+                    heart.style.animationDelay = (i * 0.05) + 's';
+                    
+                    document.body.appendChild(heart);
+                    
+                    setTimeout(() => {
+                        heart.remove();
+                    }, 2000);
+                }, i * 50);
+            }
+            
+            // Hiển thị thông báo ngọt ngào
+            setTimeout(() => {
+                const sweetAlert = document.createElement('div');
+                sweetAlert.style.position = 'fixed';
+                sweetAlert.style.top = '50%';
+                sweetAlert.style.left = '50%';
+                sweetAlert.style.transform = 'translate(-50%, -50%)';
+                sweetAlert.style.background = 'rgba(255, 20, 147, 0.85)';
+                sweetAlert.style.color = 'white';
+                sweetAlert.style.padding = '30px';
+                sweetAlert.style.borderRadius = '15px';
+                sweetAlert.style.zIndex = '9999';
+                sweetAlert.style.textAlign = 'center';
+                sweetAlert.style.fontSize = '22px';
+                sweetAlert.style.backdropFilter = 'blur(5px)';
+                sweetAlert.innerHTML = '💖 Tớ cũng yêu cậu rất nhiều! 💖<br><br>Cảm ơn cậu đã đồng ý làm người yêu tớ! 🥰';
+                document.body.appendChild(sweetAlert);
+                setTimeout(() => {
+                    sweetAlert.remove();
+                }, 4000);
+            }, 1000);
+        }
+
+        // Khởi tạo
+        createStars();
+        
+        // Gọi hàm tạo nhóm chữ rơi định kỳ
+        setInterval(createFallingTextGroup, 2500); 
+        setInterval(createPinkHeart, 1500); 
+        
+        // Tạo nhóm chữ rơi ban đầu ngay khi tải trang
+        createFallingTextGroup();
+        
+        for (let i = 0; i < 2; i++) {
+            setTimeout(createPinkHeart, i * 700);
+        }
+    </script>
+</body>
+</html>
