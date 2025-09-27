@@ -51,10 +51,10 @@
             z-index: 2;
         }
 
-        /* Phân bố 7 cột để tránh tràn lề phải */
+        /* Phân bố 7 cột - các cột bên trái được kéo sát vào lề */
         .column-1 { left: 3%; }
-        .column-2 { left: 16%; }
-        .column-3 { left: 29%; }
+        .column-2 { left: 10%; } /* Gần lề trái hơn */
+        .column-3 { left: 17%; } /* Gần lề trái hơn */
         .column-4 { left: 42%; }
         .column-5 { left: 55%; }
         .column-6 { left: 68%; }
@@ -237,7 +237,7 @@
     <!-- Thông điệp chính -->
     <div class="main-message">
         <h1>
-            <span>💖 Làm Người Yêu 💖<br>💖 Của Tớ Nhé 💖</span>
+            <span>💖 Làm Người Yêu<br> 💖Của Tớ Nhé 💖</span>
         </h1>
         <button class="heart-button" onclick="createHeartBurst(event)">Đồng ý 💕</button>
     </div>
@@ -265,6 +265,7 @@
 
         // Các thông điệp yêu thương
         const messages = [
+            "Làm người yêu tớ nhé ❤️",
             "Tớ thích cậu lắm ❤️",
             "Cậu là tất cả với tớ 💕",
             "Yêu cậu nhiều lắm 💖",
@@ -274,7 +275,7 @@
             "Cùng nhau mãi mãi nhé 🌹",
             "Cậu làm tớ hạnh phúc 😊",
             "Tớ muốn ở bên cậu 💏",
-            "Hạnh phúc khi bên cậu 🥰",
+            "Hạnh phúc khi có cậu 🥰",
             "Cậu là điều tuyệt vời nhất 💫",
             "Cậu là lý do tớ mỉm cười 😊"
         ];
@@ -302,14 +303,17 @@
             // *** LOGIC MỚI: Điều chỉnh vị trí để chống tràn chữ ***
             const halfBColumnIndices = [4, 5, 6];
             if (halfBColumnIndices.includes(columnIndex)) {
-                const textWidth = element.offsetWidth;
-                const screenWidth = window.innerWidth;
-                const currentLeftPx = element.offsetLeft;
+                // Sử dụng requestAnimationFrame để đảm bảo element đã được render và có kích thước
+                requestAnimationFrame(() => {
+                    const textWidth = element.offsetWidth;
+                    const screenWidth = window.innerWidth;
+                    const currentLeftPx = element.offsetLeft;
 
-                if (currentLeftPx + textWidth > screenWidth) {
-                    const safeLeftPx = screenWidth - textWidth - 15; // 15px lề an toàn
-                    element.style.left = safeLeftPx + 'px';
-                }
+                    if (currentLeftPx + textWidth > screenWidth) {
+                        const safeLeftPx = screenWidth - textWidth - 15; // 15px lề an toàn
+                        element.style.left = safeLeftPx + 'px';
+                    }
+                });
             }
 
             const durationMs = parseFloat(duration) * 1000 + parseFloat(delay.replace('s', '')) * 1000 + 100;
@@ -423,7 +427,7 @@
         createStars();
         
         // Gọi hàm tạo chữ rơi định kỳ với logic mới
-        setInterval(createAlternatingFallingText, 1250); 
+        setInterval(createAlternatingFallingText, 625); 
         setInterval(createPinkHeart, 1500); 
         
         // Tạo dòng chữ đầu tiên ngay lập tức
