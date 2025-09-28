@@ -237,7 +237,7 @@
     <!-- Thông điệp chính -->
     <div class="main-message">
         <h1>
-            <span>💖 Làm Người Yêu<br> 💖Của Tớ Nhé 💖</span>
+            <span>💖 Làm Người Yêu<br>Của Tớ Nhé 💖</span>
         </h1>
         <button class="heart-button" onclick="createHeartBurst(event)">Đồng ý 💕</button>
     </div>
@@ -275,6 +275,7 @@
             "Cùng nhau mãi mãi nhé 🌹",
             "Cậu làm tớ hạnh phúc 😊",
             "Tớ muốn ở bên cậu 💏",
+            "Cậu có thích tớ không? 💭",
             "Hạnh phúc khi có cậu 🥰",
             "Cậu là điều tuyệt vời nhất 💫",
             "Cậu là lý do tớ mỉm cười 😊"
@@ -300,35 +301,30 @@
             
             container.appendChild(element);
             
-            // *** LOGIC MỚI: Điều chỉnh vị trí để chống tràn chữ ***
             const halfBColumnIndices = [4, 5, 6];
             if (halfBColumnIndices.includes(columnIndex)) {
-                // Sử dụng requestAnimationFrame để đảm bảo element đã được render và có kích thước
                 requestAnimationFrame(() => {
                     const textWidth = element.offsetWidth;
                     const screenWidth = window.innerWidth;
                     const currentLeftPx = element.offsetLeft;
 
                     if (currentLeftPx + textWidth > screenWidth) {
-                        const safeLeftPx = screenWidth - textWidth - 15; // 15px lề an toàn
+                        const safeLeftPx = screenWidth - textWidth - 15;
                         element.style.left = safeLeftPx + 'px';
                     }
                 });
             }
 
-            const durationMs = parseFloat(duration) * 1000 + parseFloat(delay.replace('s', '')) * 1000 + 100;
-            setTimeout(() => {
-                if (element.parentNode) {
-                    element.remove();
-                }
-            }, durationMs);
+            // Xóa element ngay sau khi animation kết thúc để tránh bị lag
+            element.addEventListener('animationend', () => {
+                element.remove();
+            }, { once: true });
         }
         
         // Logic thả rơi so le giữa hai nửa màn hình
         function createAlternatingFallingText() {
-            const halfAColumns = [0, 1, 2]; // Các cột thuộc nửa trái (chỉ số mảng)
-            const halfBColumns = [4, 5, 6]; // Các cột thuộc nửa phải (chỉ số mảng)
-            // Cột 4 (chỉ số 3) được bỏ trống ở giữa để tạo khoảng cách
+            const halfAColumns = [0, 1, 2];
+            const halfBColumns = [4, 5, 6];
 
             let chosenColumnIndex;
 
@@ -360,20 +356,16 @@
             
             container.appendChild(heart);
             
-            const durationMs = parseFloat(duration) * 1000 + parseFloat(heart.style.animationDelay.replace('s', '')) * 1000 + 100;
-            setTimeout(() => {
-                if (heart.parentNode) {
-                    heart.remove();
-                }
-            }, durationMs);
+            heart.addEventListener('animationend', () => {
+                heart.remove();
+            }, { once: true });
         }
         
         // Hiệu ứng trái tim nổ khi click
         function createHeartBurst(event) {
-            if (isAgreed) return; // Tránh chạy lại hiệu ứng nếu đã nhấn rồi
-            isAgreed = true; // Đặt trạng thái đã đồng ý
+            if (isAgreed) return;
+            isAgreed = true;
 
-            // Đổi tất cả dòng chữ đang rơi
             const allFallingTexts = document.querySelectorAll('.falling-text');
             allFallingTexts.forEach(text => {
                 text.textContent = 'Tớ yêu cậu nhiều lắm 💖';
@@ -427,7 +419,7 @@
         createStars();
         
         // Gọi hàm tạo chữ rơi định kỳ với logic mới
-        setInterval(createAlternatingFallingText, 625); 
+        setInterval(createAlternatingFallingText, 1250); 
         setInterval(createPinkHeart, 1500); 
         
         // Tạo dòng chữ đầu tiên ngay lập tức
